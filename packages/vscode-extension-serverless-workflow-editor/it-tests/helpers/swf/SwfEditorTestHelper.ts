@@ -46,6 +46,25 @@ export default class SwfEditorTestHelper {
     const canvasWebElement = await this.getCanvasPanelElementInActiveFrame();
     const nodeCoordinates = await this.calculateNodeCenterCoordinates(nodeId);
 
+    const nodeIds = (await driver.executeScript("return window.frames.canvas.getNodeIds()")) as string[];
+
+    console.log("nodeCoordiantes:");
+    console.log(nodeCoordinates);
+
+    const screenshot = await canvasWebElement.takeScreenshot();
+
+    // Checks where the webdriver clicks on canvasWebElement by adding a click event listener to the element and logging the coordinates
+    await canvasWebElement.getDriver().executeScript(
+      `
+      arguments[0].addEventListener('click', (event) => {
+      console.log(event.clientX, event.clientY);
+    });
+    `,
+      canvasWebElement
+    );
+
+    await sleep(3000);
+
     const actions = driver.actions({ async: true });
     await actions.move({ x: nodeCoordinates[0], y: nodeCoordinates[1], origin: canvasWebElement }).click().perform();
     await sleep(2000);
@@ -132,6 +151,13 @@ export default class SwfEditorTestHelper {
     const nodeDimensions = await this.getNodeDimensions(nodeId);
     const nodeWidth = nodeDimensions[0];
     const nodeHeight = nodeDimensions[1];
+
+    //const nodeWidth = 194//nodeDimensions[0];
+    //const nodeHeight = 67//nodeDimensions[1];
+
+    // const nodeRelativeCenterX = Math.trunc(nodeWidth/2);
+    // const nodeRelativeCenterY = Math.trunc(nodeHeight/2);
+
     const nodeRelativeCenterX = nodeWidth % 2 == 0 ? nodeWidth / 2 : (nodeWidth - 1) / 2;
     const nodeRelativeCenterY = nodeHeight % 2 == 0 ? nodeHeight / 2 : (nodeWidth - 1) / 2;
 
@@ -146,6 +172,8 @@ export default class SwfEditorTestHelper {
     // Node center coordinates relative to center of canvas
     const nodeCenterXCoordinate = nodeCoordinates[0] + nodeRelativeCenterX - canvasX0PointerOffset;
     const nodeCenterYCoordinate = nodeCoordinates[1] + nodeRelativeCenterY - canvasY0PointerOffset;
+    //const nodeCenterXCoordinate = 41 + nodeRelativeCenterX - canvasX0PointerOffset;
+    //const nodeCenterYCoordinate = 351 + nodeRelativeCenterY - canvasY0PointerOffset;
 
     return Promise.resolve([nodeCenterXCoordinate, nodeCenterYCoordinate]);
   }
