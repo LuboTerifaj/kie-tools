@@ -20,6 +20,8 @@ import SwfEditorTestHelper from "./helpers/swf/SwfEditorTestHelper";
 import SwfTextEditorTestHelper from "./helpers/swf/SwfTextEditorTestHelper";
 import VSCodeTestHelper from "./helpers/VSCodeTestHelper";
 
+import { VSBrowser } from "vscode-extension-tester";
+
 describe("Serverless workflow editor - Diagram navigation tests", () => {
   const TEST_PROJECT_FOLDER: string = path.resolve("it-tests-tmp", "resources", "diagram-navigation");
 
@@ -39,6 +41,7 @@ describe("Serverless workflow editor - Diagram navigation tests", () => {
 
   afterEach(async function () {
     this.timeout(15000);
+    VSBrowser.instance.takeScreenshot("screenshot");
     await testHelper.closeAllEditors();
     await testHelper.closeAllNotifications();
   });
