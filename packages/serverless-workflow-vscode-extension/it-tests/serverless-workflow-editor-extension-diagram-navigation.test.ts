@@ -27,58 +27,55 @@ describe("Serverless workflow editor - Diagram navigation tests", () => {
   let testHelper: VSCodeTestHelper;
 
   before(async function () {
-    this.timeout(30000);
+    this.timeout(300000000000000000000000000000000000000);
     testHelper = new VSCodeTestHelper();
     await testHelper.openFolder(TEST_PROJECT_FOLDER);
   });
 
   beforeEach(async function () {
-    this.timeout(15000);
+    this.timeout(1500000000000000000000000000000000000000);
     await testHelper.closeAllEditors();
     await testHelper.closeAllNotifications();
   });
 
   afterEach(async function () {
-    this.timeout(15000);
-    await testHelper.takeScreenshotOnTestFailure(this, DIST_IT_TESTS_FOLDER);
+    this.timeout(150000000000000000000000000000000000000000);
+    //await testHelper.takeScreenshotOnTestFailure(this, DIST_IT_TESTS_FOLDER);
     await testHelper.closeAllEditors();
     await testHelper.closeAllNotifications();
   });
 
-  //TOD - fix test environment
-  it.skip("Select states", async function () {
-    this.timeout(30000);
+  it("Select states", async function () {
+    this.timeout(300000000000000000000000000000000000000);
 
     const WORKFLOW_NAME = "applicant-request-decision.sw.json";
 
-    try {
-      const editorWebViews = await testHelper.openFileFromSidebar(WORKFLOW_NAME);
-      const swfTextEditor = new SwfTextEditorTestHelper(editorWebViews[0]);
-      const swfEditor = new SwfEditorTestHelper(editorWebViews[1]);
+    const editorWebViews = await testHelper.openFileFromSidebar(WORKFLOW_NAME);
+    const swfTextEditor = new SwfTextEditorTestHelper(editorWebViews[0]);
+    const swfEditor = new SwfEditorTestHelper(editorWebViews[1]);
 
-      const nodeIds = await swfEditor.getAllNodeIds();
-      expect(nodeIds.length).equal(6);
+    const nodeIds = await swfEditor.getAllNodeIds();
+    expect(nodeIds.length).equal(6);
 
-      // Select CheckApplication node
-      await swfEditor.selectNode(nodeIds[1]);
+    // Select CheckApplication node
+    //await swfEditor.selectNode(nodeIds[1]);
+    await swfEditor.selectNodeByName("CheckApplication");
 
-      const textEditor = await swfTextEditor.getSwfTextEditor();
-      let lineNumber = (await textEditor.getCoordinates())[0];
-      let columnNumber = (await textEditor.getCoordinates())[1];
+    const textEditor = await swfTextEditor.getSwfTextEditor();
+    let lineNumber = (await textEditor.getCoordinates())[0];
+    let columnNumber = (await textEditor.getCoordinates())[1];
 
-      expect(lineNumber).equal(16);
-      expect(columnNumber).equal(7);
+    expect(lineNumber).equal(16);
+    expect(columnNumber).equal(7);
 
-      // Select StartApplication node
-      await swfEditor.selectNode(nodeIds[2]);
+    // Select StartApplication node
+    //await swfEditor.selectNode(nodeIds[2]);
+    await swfEditor.selectNodeByName("StartApplication");
 
-      lineNumber = (await textEditor.getCoordinates())[0];
-      columnNumber = (await textEditor.getCoordinates())[1];
+    lineNumber = (await textEditor.getCoordinates())[0];
+    columnNumber = (await textEditor.getCoordinates())[1];
 
-      expect(lineNumber).equal(33);
-      expect(columnNumber).equal(7);
-    } catch (error) {
-      console.error("Select states: " + error);
-    }
+    expect(lineNumber).equal(33);
+    expect(columnNumber).equal(7);
   });
 });

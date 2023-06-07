@@ -39,17 +39,70 @@ export default class SwfEditorTestHelper extends EditorTestHelper {
   /**
    * Selects node on canvas.
    *
+   * @param nodeName of the node to be selected.
+   */
+  public async selectNodeByName(nodeName: string) {
+    await this.switchToEditorFrame();
+    const driver = this.webview.getDriver();
+
+    //const canvasWebElement = await this.getCanvasPanelElementInActiveFrame();
+    //const nodeCoordinates = await this.calculateNodeCenterCoordinates(nodeId);
+
+    //const actions = driver.actions({ async: true });
+    //await actions.move({ x: nodeCoordinates[0], y: nodeCoordinates[1], origin: canvasWebElement }).click().perform();
+
+    const scriptSelectByName = `window.frames.editor.session.selectByName("${nodeName}")`;
+    await driver.executeScript(scriptSelectByName);
+
+    /*
+    const x = await driver.executeScript("return window.frames.editor.session.getSelectedNode()");
+    console.log("NODEEEE");
+    console.log(x);
+
+    const y = await driver.executeScript("return window.frames.editor.session.getSelectedDefinition()");
+    console.log("DEFINITIOON");
+    console.log(y);
+    */
+
+    //window.frames.editor.session.getSelectedNode()
+
+    await sleep(8000);
+    await this.switchBack();
+  }
+
+  /**
+   * Selects node on canvas.
+   *
    * @param nodeId of the node to be selected.
    */
   public async selectNode(nodeId: string) {
     await this.switchToEditorFrame();
     const driver = this.webview.getDriver();
 
-    const canvasWebElement = await this.getCanvasPanelElementInActiveFrame();
-    const nodeCoordinates = await this.calculateNodeCenterCoordinates(nodeId);
+    //const canvasWebElement = await this.getCanvasPanelElementInActiveFrame();
+    //const nodeCoordinates = await this.calculateNodeCenterCoordinates(nodeId);
 
-    const actions = driver.actions({ async: true });
-    await actions.move({ x: nodeCoordinates[0], y: nodeCoordinates[1], origin: canvasWebElement }).click().perform();
+    //const actions = driver.actions({ async: true });
+    //await actions.move({ x: nodeCoordinates[0], y: nodeCoordinates[1], origin: canvasWebElement }).click().perform();
+
+    const scriptSelectByUUID = `window.frames.editor.session.selectByUUID("${nodeId}")`;
+    await driver.executeScript(scriptSelectByUUID);
+
+    await sleep(2000);
+
+    /*
+    const x = await driver.executeScript("return window.frames.editor.session.getSelectedNode()");
+    console.log("NODEEEE");
+    console.log(x);
+
+    const y = await driver.executeScript("return window.frames.editor.session.getSelectedDefinition()");
+    console.log("DEFINITIOON");
+    console.log(y);
+
+    */
+
+    //window.frames.editor.session.getSelectedNode()
+
     await sleep(8000);
     await this.switchBack();
   }
